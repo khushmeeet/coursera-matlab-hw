@@ -1,0 +1,12 @@
+function mbd = spherical_mirror_aberr( fn,d )
+f = fn*d;
+delta_x = 0.01;
+x = 0:delta_x:d/2;
+theta = asin(x./(2*f));
+disp(size(theta));
+D = (2*f*tan(theta.*2))*((1./cos(theta))-1)';
+disp(size(D))
+mbd = ((8*delta_x)*sum(sum(x.*D)))/d^2;
+disp(size(mbd));
+end
+
