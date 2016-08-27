@@ -1,43 +1,16 @@
-function dd = day_diff( month1,day1,month2,day2 )
-if (month1 == 1 || month1 == 3 || month1 == 5 || month1 == 7 || month1 == 8 || month1 == 10 || month1 == 12 )
-    if (month2 == 1 || month2 == 3 || month2 == 5 || month2 == 7 || month2 == 8 || month2 == 10 || month2 ==12 )
-        if (day1 >=1 && day1 <= 31) && (day2 >= 1 && day2 <=31 )
-            if datenum(2015,month2,day2) > datenum(2015,month1,day1)
-                dd = datenum(2015,month2,day2) - datenum(2015,month1,day1);
-            else
-                dd = datenum(2015,month1,day1) - datenum(2015,month2,day2);
-            end
-        end
-    elseif (month2 == 2 || month2 == 4 || month2 == 6 || month2 == 9 || month2 == 11 )
-        if (day1 >=1 && day1 <= 31) && (day2 >= 1 && day2 <=30 )
-            if datenum(2015,month2,day2) > datenum(2015,month1,day1)
-                dd = datenum(2015,month2,day2) - datenum(2015,month1,day1);
-            else
-                dd = datenum(2015,month1,day1) - datenum(2015,month2,day2);
-            end
-        end
+function diff = day_diff(m1,d1,m2,d2)
+    days = [31 28 31 30 31 30 31 31 30 31 30 31];
+    
+    diff = -1;
+    if     ~isscalar(m1) || m1 < 1 || m1 > 12       || m1 ~= floor(m1),  return;
+    elseif ~isscalar(m2) || m2 < 1 || m2 > 12       || m2 ~= floor(m2),  return;
+    elseif ~isscalar(d1) || d1 < 1 || d1 > days(m1) || d1 ~= floor(d1),  return;
+    elseif ~isscalar(d2) || d2 < 1 || d2 > days(m2) || d2 ~= floor(d2),  return;
     end
-elseif (month1 == 2 || month1 == 4 || month1 == 6 || month1 == 9 || month1 == 11 )
-    if (month2 == 1 || month2 == 3 || month2 == 5 || month2 == 7 || month2 == 8 || month2 == 10 || month2 ==12 )
-        if (day1 >=1 && day1 <= 31) && (day2 >= 1 && day2 <=31 )
-            if datenum(2015,month2,day2) > datenum(2015,month1,day1)
-                dd = datenum(2015,month2,day2) - datenum(2015,month1,day1);
-            else
-                dd = datenum(2015,month1,day1) - datenum(2015,month2,day2);
-            end
-        end
-    elseif (month2 == 2 || month2 == 4 || month2 == 6 || month2 == 9 || month2 == 11 )
-        if (day1 >=1 && day1 <= 31) && (day2 >= 1 && day2 <=30 )
-            if datenum(2015,month2,day2) > datenum(2015,month1,day1)
-                dd = datenum(2015,month2,day2) - datenum(2015,month1,day1);
-            else
-                dd = datenum(2015,month1,day1) - datenum(2015,month2,day2);
-            end
-        end
-    end
-else
-    disp('-1');
-    return
-end
-end
 
+    if m2 < m1 || (m1 == m2 && d2 < d1)      
+        tmp = m1; m1 = m2; m2 = tmp;          
+        tmp = d1; d1 = d2; d2 = tmp;
+    end
+    diff = sum(days(m1:m2-1)) + d2 - d1;
+end
